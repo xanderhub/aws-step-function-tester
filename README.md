@@ -14,18 +14,10 @@ Testing AWS Step Functions can be challenging due to several reasons:
 
 - Integration with AWS Services: Step Functions often interact with various AWS services (e.g., Lambda, S3, SQS),
   requiring a comprehensive setup to simulate these interactions accurately.
--
 
-State Management: Maintaining and verifying the state of the Step Function during testing can be complex,
-especially when dealing with asynchronous tasks and retries.
+- Error Handling: Properly simulating and testing error scenarios, such as timeouts and service failures,
+  requires additional effort to ensure the Step Function behaves as expected.  
 
-Cost and Time: Running Step Functions in a real AWS environment can incur costs and take time,
-especially for long-running workflows.
-
-Error Handling: Properly simulating and testing error scenarios, such as timeouts and service failures,
-requires additional effort to ensure the Step Function behaves as expected.  
-Environment Differences: Differences between the local development environment and the AWS environment can lead to
-discrepancies in behavior, making it harder to ensure consistent test results.
 
 ## Features
 
