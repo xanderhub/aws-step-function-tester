@@ -1,0 +1,28 @@
+{
+  "default": {
+    "requireModule": ["ts-node/register"],
+    "require": [
+      "test/step-definitions/*.ts"
+    ],
+    "format": [
+      ["html", "reports/html-formatter.html"],
+      "@cucumber/pretty-formatter"
+    ],
+    "formatOptions": {
+      "colorsEnabled": true,
+      "theme": {
+        "feature keyword": [
+          "magenta",
+          "bold"
+        ],
+        "scenario keyword": [
+          "magenta",
+          "bold"
+        ],
+        "step keyword": [
+          "bold"
+        ]
+      }
+    }
+  }
+}

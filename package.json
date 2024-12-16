@@ -1,0 +1,26 @@
+{
+  "name": "lib-applink-sfn-tester",
+  "version": "1.0.0",
+  "description": "This library designed to facilitate testing of AWS Step Functions. It provides utilities and commands to interact with AWS services, allowing developers to simulate and validate the behavior of their serverless applications.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "cucumber-js -p default test/features/*.feature --config test/cucumber.json"
+  },
+  "dependencies": {
+    "@aws-sdk/client-lambda": "3.645.0",
+    "@aws-sdk/client-sfn": "3.645.0",
+    "axios": "^1.7.9",
+    "ts-retry": "^5.0.1"
+  },
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "@cucumber/pretty-formatter": "^1.0.1",
+    "ts-node": "10.9.2",
+    "typescript": "5.6.2"
+  }
+}
+
+
+
