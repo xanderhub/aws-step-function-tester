@@ -4,7 +4,7 @@ export const config = {
     minimalTimeout: 1,
     minimalConcurrency: 0,
     mocks: {
-        sourcePath: "src/lambda/source",
+        sourcePath: "node_modules/aws-step-function-tester/dist/src/lambda/source",
         timeout: {
             source: "delay.zip",
             handler: "delay.delay"
