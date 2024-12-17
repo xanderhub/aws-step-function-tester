@@ -1,4 +1,4 @@
-# lib-applink-sfn-tester
+# aws-step-function-tester
 
 This is a Node.js library designed to facilitate testing of **AWS Step Functions**.
 It provides utilities and commands to interact with AWS services, allowing developers to simulate
@@ -39,4 +39,21 @@ Just like _Jest_ or _Chai_ for AWS Step Function but with high fidelity with eas
 - Simulate various Lambda execution scenarios (e.g., timeouts, memory overload)
 - Mock behavior of other AWS services (e.g., S3, SQS)
 - Inspect Step Function execution and status
+
+## How To Use
+
+![{C96FA410-20F5-4289-BA11-0AC25A1BD303}](https://github.com/user-attachments/assets/84767065-08cc-4c35-8fb2-26b30ca6fc3e)
+
+```
+const copyStepFunction: SfnInstance = await createCopyStepFunction("original-step-function-ARN");
+```
+![{13799992-8061-406C-B1C2-AF546321D9D8}](https://github.com/user-attachments/assets/ea7c6aa5-ad1c-46ae-8732-c2caa8ea10c6)
+
+```
+const lambdaMock: LambdaMock = await createLambdaMock("original-lambda-name");
+```
+
+![{0A56CCE4-BEC9-4881-A6FB-8FCCD0DF4D69}](https://github.com/user-attachments/assets/db256161-7fde-46c7-8856-fc6e6fb5149d)
+
+
 
