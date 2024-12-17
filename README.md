@@ -55,5 +55,31 @@ const lambdaMock: LambdaMock = await createLambdaMock("original-lambda-name");
 
 ![{0A56CCE4-BEC9-4881-A6FB-8FCCD0DF4D69}](https://github.com/user-attachments/assets/db256161-7fde-46c7-8856-fc6e6fb5149d)
 
+```
+await lambdaMock.memoryOverload();
+await lambdaMock.timeout();
+await lambdaMock.throttle();
+await lambdaMock.custom("path/to/source/code", "handler");
+await lambdaMock.reset();
+
+```
+![{10F1ADDF-51B1-40FC-9C1C-DEDFD90878DC}](https://github.com/user-attachments/assets/2af2eb16-9262-453c-97d1-0413271e7629)
+
+```
+await copyStepFunction.mockLambdaStep("step-name", lambdaMock);
+```
+![{B0F304FC-6AA6-41EA-B1EF-9336DEE58AC3}](https://github.com/user-attachments/assets/35359b37-4e77-489c-8059-bfdf830f22a2)
+
+```
+    const execution: SfnExecution = await copyStepFunction.execute();
+
+    await expect(execution).toFail();
+    await expect(execution).toExecuteStep("Log Timeout Error");
+    await expect(execution).toExecuteStep("Fail");
+```
+
+
+
+
 
 
