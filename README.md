@@ -25,6 +25,8 @@ requires additional effort to ensure the Step Function behaves as expected.
    
   ![{825B06EF-EC44-45F8-BB57-C57C52727232}](https://github.com/user-attachments/assets/fb2f0f8e-fc3e-41c0-aa8a-bb7bb8f5a68b)
 
+
+
 ## Solution - aws-step-function-tester
 The main idea of this library is to create an intuitive API based on AWS-SDK for testing real Step Function running on your AWS account.
 Just like _Jest_ or _Chai_ for AWS Step Function but with high fidelity with easy setup and integration with existing E2E tests you have.
@@ -39,6 +41,8 @@ Just like _Jest_ or _Chai_ for AWS Step Function but with high fidelity with eas
 - Simulate various Lambda execution scenarios (e.g., timeouts, memory overload)
 - Mock behavior of other AWS services (e.g., S3, SQS)
 - Inspect Step Function execution and status
+
+
 
 ## How To Use
 
@@ -68,7 +72,8 @@ await lambdaMock.reset();
 ```
 await copyStepFunction.mockLambdaStep("step-name", lambdaMock);
 ```
-![{B0F304FC-6AA6-41EA-B1EF-9336DEE58AC3}](https://github.com/user-attachments/assets/35359b37-4e77-489c-8059-bfdf830f22a2)
+![{116A5B5E-ABB1-41B7-9124-FE8AD169CD2D}](https://github.com/user-attachments/assets/2ad2ea8b-02b4-4cfb-8b56-c1d74c952c06)
+
 
 ```
     const execution: SfnExecution = await copyStepFunction.execute();
@@ -77,6 +82,17 @@ await copyStepFunction.mockLambdaStep("step-name", lambdaMock);
     await expect(execution).toExecuteStep("Log Timeout Error");
     await expect(execution).toExecuteStep("Fail");
 ```
+
+
+## Limitations
+
+- **Relatively slow**  due to network latency and communication with AWS service.
+- **Cost**  for using real Step Functions, Lambda, and other resources.
+- **Mocking of AWS services**  is limited, and not all cases can be covered 
+
+
+
+
 
 
 
