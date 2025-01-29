@@ -9,13 +9,13 @@ export class SfnState {
         return JSON.parse(JSON.stringify(sfn));
     }
 
-    private findStep(definition: JsonObject, stepName: string): JsonObject {
-        if (definition?.hasOwnProperty(stepName)) {
-            return definition[stepName];
+    private findJsonAttribute(json: JsonObject, attributeName: string): JsonObject {
+        if (json?.hasOwnProperty(attributeName)) {
+            return typeof json[attributeName] === 'object' ? json[attributeName] : json;
         }
-        for (let i in definition) {
-            if (typeof definition[i] === 'object') {
-                let result: JsonObject = this.findStep(definition[i], stepName);
+        for (let attribute in json) {
+            if (typeof json[attribute] === 'object') {
+                let result: JsonObject = this.findJsonAttribute(json[attribute], attributeName);
                 if (result) {
                     return result;
                 }
@@ -38,20 +38,21 @@ export class SfnState {
     }
 
     public updateLambdaStep(stepName: string, lambdaName: string): void {
-        const lambdaStep: JsonObject = this.findStep(this._definition!.States, stepName);
+        const lambdaStep: JsonObject = this.findJsonAttribute(this._definition!.States, stepName);
         if (!lambdaStep)
             throw new Error(`Step "${stepName}" can't be found in step function definition`);
 
-        if (!lambdaStep.Parameters?.FunctionName)
+        let functionDetails: JsonObject = this.findJsonAttribute(lambdaStep, 'FunctionName');
+        if (!functionDetails)
             throw new Error(`Step "${stepName}" doesn't have a lambda function defined`);
 
-        lambdaStep.Parameters.FunctionName = lambdaStep.Parameters.FunctionName.split(':')
+        functionDetails.FunctionName = functionDetails.FunctionName.split(':')
             .map((namePart: string, index: number) => index === config.lambdaNameIndex ? lambdaName : namePart)
             .join(':');
     }
 
     public updateGenericStep(stepName: string, stepDefinition: JsonObject): void {
-        let originalStepDefinition: JsonObject = this.findStep(this._definition!.States, stepName);
+        let originalStepDefinition: JsonObject = this.findJsonAttribute(this._definition!.States, stepName) as JsonObject;
         if (!originalStepDefinition)
             throw new Error(`Step "${stepName}" can't be found in step function definition`);
 
