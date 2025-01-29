@@ -43,8 +43,8 @@ When('lambda mock is set to simulate throttling', {timeout: 120000}, async funct
 });
 
 When('lambda mock is set to simulate generic error', {timeout: 120000}, async function () {
-    // await lambdaMock.genericError();
-    await lambdaMock.custom("src/lambda/source/generic-error.zip", "generic-error.genericError");
+    await lambdaMock.genericError();
+    // await lambdaMock.custom("src/lambda/source/generic-error.zip", "generic-error.genericError");
 });
 
 
