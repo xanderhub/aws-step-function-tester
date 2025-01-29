@@ -9,13 +9,13 @@ export class SfnState {
         return JSON.parse(JSON.stringify(sfn));
     }
 
-    private findStep(definition: JsonObject, stepName: string): JsonObject {
+    private findStep(definition: JsonObject, stepName: string): JsonObject | string {
         if (definition?.hasOwnProperty(stepName)) {
             return definition[stepName];
         }
         for (let i in definition) {
             if (typeof definition[i] === 'object') {
-                let result: JsonObject = this.findStep(definition[i], stepName);
+                let result: JsonObject | string = this.findStep(definition[i], stepName);
                 if (result) {
                     return result;
                 }
@@ -38,20 +38,21 @@ export class SfnState {
     }
 
     public updateLambdaStep(stepName: string, lambdaName: string): void {
-        const lambdaStep: JsonObject = this.findStep(this._definition!.States, stepName);
+        const lambdaStep: JsonObject = this.findStep(this._definition!.States, stepName) as JsonObject;
         if (!lambdaStep)
             throw new Error(`Step "${stepName}" can't be found in step function definition`);
 
-        if (!lambdaStep.Parameters?.FunctionName)
+        let functionName: string = this.findStep(lambdaStep, 'FunctionName') as string;
+        if (!functionName)
             throw new Error(`Step "${stepName}" doesn't have a lambda function defined`);
 
-        lambdaStep.Parameters.FunctionName = lambdaStep.Parameters.FunctionName.split(':')
+        functionName.split(':')
             .map((namePart: string, index: number) => index === config.lambdaNameIndex ? lambdaName : namePart)
             .join(':');
     }
 
     public updateGenericStep(stepName: string, stepDefinition: JsonObject): void {
-        let originalStepDefinition: JsonObject = this.findStep(this._definition!.States, stepName);
+        let originalStepDefinition: JsonObject = this.findStep(this._definition!.States, stepName) as JsonObject;
         if (!originalStepDefinition)
             throw new Error(`Step "${stepName}" can't be found in step function definition`);
 
