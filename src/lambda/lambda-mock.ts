@@ -78,8 +78,10 @@ export class LambdaMock {
     }
 
     public async timeout(): Promise<LambdaCommandOutput> {
+        const timeoutSourcePath = await this.evaluateSourcePath(config.mocks.timeout.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(await this.evaluateSourcePath(path.join(config.mocks.timeout.source)));
+            await this.buildUpdateLambdaCodeCommand(timeoutSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
@@ -92,8 +94,10 @@ export class LambdaMock {
     }
 
     public async memoryOverload(): Promise<LambdaCommandOutput> {
+        const memoryOverloadSourcePath = await this.evaluateSourcePath(config.mocks.memoryOverload.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(path.join(config.mocks.sourcePath, config.mocks.memoryOverload.source));
+            await this.buildUpdateLambdaCodeCommand(memoryOverloadSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
@@ -105,8 +109,10 @@ export class LambdaMock {
     }
 
     public async genericError(): Promise<LambdaCommandOutput> {
+        const genericErrorSourcePath = await this.evaluateSourcePath(config.mocks.genericError.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(path.join(config.mocks.sourcePath, config.mocks.genericError.source));
+            await this.buildUpdateLambdaCodeCommand(genericErrorSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
