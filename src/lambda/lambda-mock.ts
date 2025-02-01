@@ -1,7 +1,7 @@
 import {FunctionCode} from "@aws-sdk/client-lambda/dist-types/models/models_0";
 import {UpdateLambdaConcurrencyCommand} from "./commands/update-lambda-concurrency-command";
 import {UpdateLambdaCodeCommand} from "./commands/update-lambda-code-command";
-import {readFile} from "fs/promises";
+import {readFile, access} from "fs/promises";
 import path from "path";
 import {UpdateLambdaConfigurationCommand} from "./commands/update-lambda-configuration-command";
 import {LambdaClient, LastUpdateStatus} from "@aws-sdk/client-lambda";
@@ -55,6 +55,18 @@ export class LambdaMock {
         return result;
     }
 
+    private async evaluateSourcePath(sourceName: string): Promise<PathLike> {
+        const sourcePath = path.join(config.mocks.sourcePath, sourceName);
+        const fallbackSourcePath = path.join(config.mocks.fallbackSourcePath, sourceName);
+        try {
+            await access(sourcePath);
+            return sourcePath;
+        } catch (error) {
+            await access(fallbackSourcePath);
+            return fallbackSourcePath;
+        }
+    }
+
     public async throttle(): Promise<LambdaCommandOutput> {
         console.log(`Setting lambda "${this.name}" to throttle`);
         return this.validateLambdaUpdated(() =>
@@ -66,8 +78,10 @@ export class LambdaMock {
     }
 
     public async timeout(): Promise<LambdaCommandOutput> {
+        const timeoutSourcePath = await this.evaluateSourcePath(config.mocks.timeout.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(path.join(config.mocks.sourcePath, config.mocks.timeout.source));
+            await this.buildUpdateLambdaCodeCommand(timeoutSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
@@ -80,8 +94,10 @@ export class LambdaMock {
     }
 
     public async memoryOverload(): Promise<LambdaCommandOutput> {
+        const memoryOverloadSourcePath = await this.evaluateSourcePath(config.mocks.memoryOverload.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(path.join(config.mocks.sourcePath, config.mocks.memoryOverload.source));
+            await this.buildUpdateLambdaCodeCommand(memoryOverloadSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
@@ -93,8 +109,10 @@ export class LambdaMock {
     }
 
     public async genericError(): Promise<LambdaCommandOutput> {
+        const genericErrorSourcePath = await this.evaluateSourcePath(config.mocks.genericError.source)
+
         const updateCodeCommand =
-            await this.buildUpdateLambdaCodeCommand(path.join(config.mocks.sourcePath, config.mocks.genericError.source));
+            await this.buildUpdateLambdaCodeCommand(genericErrorSourcePath);
 
         const updateConfigCommand = new UpdateLambdaConfigurationCommand(this.lambdaClient)
             .withName(this.mockLambda.FunctionName)
