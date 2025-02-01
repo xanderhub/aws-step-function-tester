@@ -1,6 +1,6 @@
 {
   "name": "aws-step-function-tester",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This library designed to facilitate testing of AWS Step Functions. It provides utilities and commands to interact with AWS services, allowing developers to simulate and validate the behavior of their serverless applications.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
