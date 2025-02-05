@@ -9,6 +9,9 @@ Feature: POC for SF test using AWS SDK
     And Lambda mock created as a copy of dev-rec-innovation-lambda lambda
     And Step "Run Innovation Lambda" replaced with mocked lambda
 
+  Scenario: Custom logic
+    When lambda mock is set to simulate custom logic
+    Then Step function finishes successfully
 
   Scenario: Memory Overload
     When lambda mock is set to simulate memory overload

@@ -1,0 +1,17 @@
+{
+  "name": "custom-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@aws-lambda-powertools/logger": "^2.13.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/xanderhub/aws-step-function-tester.git"
+  },
+  "private": true
+}

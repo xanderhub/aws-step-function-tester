@@ -52,6 +52,10 @@ When('lambda mock is set to simulate memory overload', {timeout: 120000}, async 
     await lambdaMock.memoryOverload();
 });
 
+When('lambda mock is set to simulate custom logic', {timeout: 240000}, async function () {
+    await lambdaMock.custom("custom-lambda/custom-lambda.zip", "app.handler");
+});
+
 When('S3 mock is set to simulate failure', {timeout: 240000}, async function () {
     await stepFunction.mockGenericStep("GetObject",
         {
@@ -72,6 +76,7 @@ Then('Step function finishes successfully', {timeout: 240000}, async function ()
     await expect(execution).toExecuteStep("Success");
 });
 
+
 Then('Step function fails after {string} step', {timeout: 240000}, async function (stepName: string) {
     const execution: SfnExecution = await stepFunction.execute();
     await expect(execution).toFail();
@@ -79,11 +84,9 @@ Then('Step function fails after {string} step', {timeout: 240000}, async functio
     await expect(execution).toExecuteStep("Fail");
 });
 
-
 Given('Step function restored to original state', {timeout: 240000}, async function () {
     await stepFunction.reset();
 });
-
 Given('Step function copy deleted', {timeout: 240000}, async function () {
     await deleteCopyStepFunction(stepFunction.arn);
 });
