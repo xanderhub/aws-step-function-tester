@@ -10,6 +10,11 @@ Feature: POC for SF test using AWS SDK
     And Step "Run Innovation Lambda" replaced with mocked lambda
 
 
+# SF express type scenario
+#  Scenario: Step function and relevant mocks prepared for testing
+#    Given Step function dev-rec-state-machine-ticket-metadata-enrichment copied as new step function
+
+
   Scenario: Memory Overload
     When lambda mock is set to simulate memory overload
     Then Step function fails after "Send Server Error Message" step
