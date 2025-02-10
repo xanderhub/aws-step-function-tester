@@ -27,8 +27,10 @@ export class SfnManager {
 
         const sourceSfn = await SfnManager.getStepFunction(sfnArn);
         const createSfnResult = await new CreateSfnCommand()
+            .withType(sourceSfn.type)
             .withName(sourceSfn.name + config.copySfnNameSuffix)
             .withDefinition(sourceSfn.definition)
+            .withLoggingConfiguration(sourceSfn.loggingConfiguration)
             .withRole(sourceSfn.roleArn)
             .withType(sourceSfn.type)
             .runWithRetry();
