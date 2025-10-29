@@ -1,4 +1,7 @@
 # aws-step-function-tester
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 This is a Node.js library designed to facilitate testing of **AWS Step Functions**.
 It provides utilities and commands to interact with AWS services, allowing developers to simulate
@@ -99,3 +102,24 @@ await copyStepFunction.mockLambdaStep("step-name", lambdaMock);
 
 
 
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/xanderhub"><img src="https://avatars.githubusercontent.com/u/33380175?v=4?s=100" width="100px;" alt="Alex Ivanov"/><br /><sub><b>Alex Ivanov</b></sub></a><br /><a href="https://github.com/xanderhub/aws-step-function-tester/commits?author=xanderhub" title="Code">💻</a> <a href="https://github.com/xanderhub/aws-step-function-tester/commits?author=xanderhub" title="Documentation">📖</a> <a href="#ideas-xanderhub" title="Ideas, Planning, & Feedback">🤔</a> <a href="#maintenance-xanderhub" title="Maintenance">🚧</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
