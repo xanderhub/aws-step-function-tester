@@ -44,6 +44,7 @@ export class LambdaMockManager {
             .withTimeout(sourceLambda?.Configuration?.Timeout)
             .withMemorySize(sourceLambda?.Configuration?.MemorySize)
             .withEnvironment(sourceLambda?.Configuration?.Environment)
+            .withTags(sourceLambda?.Tags)
             .runWithRetry();
 
         newLambda.Code = sourceLambda.Code as FunctionCodeLocation;
