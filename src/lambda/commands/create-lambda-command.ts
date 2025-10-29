@@ -45,6 +45,23 @@ export class CreateLambdaCommand extends LambdaCommandRunner {
         return this;
     }
 
+    public withTags(tags: Record<string, string> | undefined) {
+        if (!tags) {
+            return this;
+        }
+
+        const noneAwsTags = Object.keys(tags).filter(key => !key.toLowerCase().startsWith("aws"));
+        this.input.Tags = noneAwsTags.reduce((obj, key) => {
+            obj[key] = tags[key];
+            return obj;
+        }, {} as Record<string, string>);
+
+        console.log("original tags", JSON.stringify(tags), "updatedTags", JSON.stringify(this.input.Tags));
+        
+        
+        return this;
+    }
+
     protected execute(): Promise<LambdaCommandOutput> {
         return this._lambdaClient.send(new CreateFunctionCommand(this.input as CreateFunctionRequest));
     }
