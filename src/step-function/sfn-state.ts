@@ -46,6 +46,11 @@ export class SfnState {
         if (!functionDetails)
             throw new Error(`Step "${stepName}" doesn't have a lambda function defined`);
 
+        if (functionDetails.FunctionName.indexOf(':') === -1) {
+            functionDetails.FunctionName = lambdaName;
+            return;
+        }
+
         functionDetails.FunctionName = functionDetails.FunctionName.split(':')
             .map((namePart: string, index: number) => index === config.lambdaNameIndex ? lambdaName : namePart)
             .join(':');
