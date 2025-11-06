@@ -5,12 +5,25 @@ import {SfnInstance} from "./sfn-instance";
 import {DeleteSfnCommand} from "./commands/control/delete-sfn-command";
 import {config} from "../config/sfn-config";
 import {ControlCommandOutput} from "../types/sfn";
+import {retryAsync} from "ts-retry";
 
 export class SfnManager {
     private static readonly snfClient = new SFNClient();
 
     private static getStepFunction(snfArn: string): Promise<ControlCommandOutput> {
         return new GetSfnCommand(this.snfClient).withArn(snfArn).runOnce();
+    }
+
+    private static async validateDeletion(sfnArn: string): Promise<void> {
+        return retryAsync(async () =>  {
+            try {
+                await this.getStepFunction(sfnArn);
+            } catch (error) {
+                return;
+            }
+
+            throw new Error(`Step function ${sfnArn} deletion was not completed in time`);
+        }, {maxTry: config.commandMaxTry, delay: config.commandTimeInterval});
     }
 
     public static copyExists(snfArn: string): Promise<boolean> {
@@ -23,6 +36,7 @@ export class SfnManager {
         if (await SfnManager.copyExists(sfnArn + config.copySfnNameSuffix)) {
             console.log("Copy of the step function already exists, deleting...");
             await SfnManager.deleteCopyStepFunction(sfnArn + config.copySfnNameSuffix);
+            await this.validateDeletion(sfnArn + config.copySfnNameSuffix);
         }
 
         const sourceSfn = await SfnManager.getStepFunction(sfnArn);
@@ -40,6 +54,7 @@ export class SfnManager {
         console.log(`Step function ${newSfn.name} created`);
         return new SfnInstance(newSfn, SfnManager.snfClient);
     }
+
 
     public static async deleteCopyStepFunction(sfnArn: string): Promise<ControlCommandOutput> {
         return new DeleteSfnCommand(SfnManager.snfClient)
