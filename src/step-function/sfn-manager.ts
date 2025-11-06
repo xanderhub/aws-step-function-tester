@@ -23,7 +23,7 @@ export class SfnManager {
             }
 
             throw new Error(`Step function ${sfnArn} deletion was not completed in time`);
-        }, {maxTry: config.commandMaxTry, delay: config.commandTimeInterval});
+        }, {maxTry: config.sfDeleteMaxTry, delay: config.sfDeleteTimeInterval});
     }
 
     public static copyExists(snfArn: string): Promise<boolean> {
@@ -36,7 +36,7 @@ export class SfnManager {
         if (await SfnManager.copyExists(sfnArn + config.copySfnNameSuffix)) {
             console.log("Copy of the step function already exists, deleting...");
             await SfnManager.deleteCopyStepFunction(sfnArn + config.copySfnNameSuffix);
-            await this.validateDeletion(sfnArn + config.copySfnNameSuffix);
+            await SfnManager.validateDeletion(sfnArn + config.copySfnNameSuffix);
         }
 
         const sourceSfn = await SfnManager.getStepFunction(sfnArn);

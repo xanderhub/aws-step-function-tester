@@ -4,5 +4,7 @@ export const config = {
     expectTimeInterval: 5000,
     expectMaxTry: 60,
     copySfnNameSuffix: "-copy",
-    lambdaNameIndex: 6
+    lambdaNameIndex: 6,
+    sfDeleteTimeInterval: 10000,
+    sfDeleteMaxTry: 100
 };
