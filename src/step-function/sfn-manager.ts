@@ -19,10 +19,28 @@ export class SfnManager {
             .catch(() => false);
     }
 
+    private static async waitForDeletion(sfnArn: string): Promise<void> {
+        const maxAttempts = 10;
+        const delayMs = 10000;
+
+        for (let attempt = 0; attempt < maxAttempts; attempt++) {
+            try {
+                await this.getStepFunction(sfnArn);
+                await new Promise(resolve => setTimeout(resolve, delayMs));
+            } catch (error) {
+                return;
+            }
+        }
+
+        throw new Error(`Timeout waiting for step function deletion: ${sfnArn}`);
+    }
+
     public static async createCopyStepFunction(sfnArn: string): Promise<SfnInstance> {
         if (await SfnManager.copyExists(sfnArn + config.copySfnNameSuffix)) {
             console.log("Copy of the step function already exists, deleting...");
             await SfnManager.deleteCopyStepFunction(sfnArn + config.copySfnNameSuffix);
+            await SfnManager.waitForDeletion(sfnArn + config.copySfnNameSuffix);
+            console.log("Deletion completed successfully");
         }
 
         const sourceSfn = await SfnManager.getStepFunction(sfnArn);
